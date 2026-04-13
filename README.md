@@ -48,10 +48,22 @@ See full documentation in Cross App Information Flow N8N.pdf
 
 ```mermaid
 flowchart TD
-    A[Data Source] --> B[n8n Workflow]
-    B --> C[Data Processing]
-    C --> D[AI Processing]
-    D --> E[Decision Logic]
-    E --> F[Send to Application A]
-    E --> G[Send to Application B]
-    E --> H[Store Data]
+    A[Trigger Event] --> B[n8n Orchestrator]
+
+    B --> C[API Integration Layer]
+    C --> D[Data Validation]
+
+    D -->|Valid| E[Data Transformation]
+    D -->|Invalid| X[Error Handling]
+
+    E --> F[AI Processing]
+    F --> G{Decision Engine}
+
+    G -->|Route A| H[Application A]
+    G -->|Route B| I[Application B]
+    G -->|Store| J[Database]
+
+    H --> K[Monitoring]
+    I --> K
+    J --> K
+    X --> K
